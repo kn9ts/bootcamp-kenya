@@ -37,27 +37,41 @@ Array.prototype.search = function(value) {
     // As long as the middle item is not the value being searched
     // And the start index is not larger than the stop index
     while (items[middle] != value && startIndex < stopIndex) {
-
-        // adjust search area
-        // If value is less than the middle value
-        if (value < items[middle]) {
-            stopIndex = middle - 1;
+        // Check if niether of the start of stop index values are not
+        // equal to what you are looking for
+        if (items[startIndex] == value || items[stopIndex] == value) {
+             middle = items[startIndex] == value ? startIndex : stopIndex;
+             // illiterations++;
         }
-        // If value is greater than the middle value
-        else if (value > items[middle]) {
-            startIndex = middle + 1;
-        }
+        // if (items[startIndex] != value && items[stopIndex] != value)
+        else {
+            // adjust search area
+            // If value is less than the middle value
+            // only if the value is not actually the middle index value
+            if(value == items[middle]) {
+                startIndex = stopIndex = middle;
+            }
+            else if (value < items[middle]) {
+                stopIndex = middle - 1;
+            }
+            // If value is greater than the middle value
+            else if (value > items[middle]) {
+                startIndex = middle + 1;
+            }
 
-        // recalculate middle
-        middle = Math.floor((stopIndex + startIndex) / 2);
-        illiterations++;
+            // recalculate middle
+            if(startIndex < stopIndex) {
+                illiterations++;
+                middle = Math.ceil((stopIndex + startIndex) / 2);
+            }
+        }
     }
 
     // It will somehow always end up s the middle value
     // make sure it's the right value
     var results = {
-        count:  illiterations,
-        index: items[middle] == value ? middle: -1,
+        count: illiterations,
+        index: items[middle] == value ? middle : -1,
         length: items.length
     };
 
